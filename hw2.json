@@ -551,7 +551,11 @@
 							"    pm.response.to.not.be.error;\r",
 							"    pm.response.to.have.jsonBody(\"id\");\r",
 							"    pm.response.to.not.have.jsonBody(\"error\");\r",
-							"});"
+							"});\r",
+							"\r",
+							"pm.collectionVariables.unset(\"boardId\");\r",
+							"\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -735,11 +739,15 @@
 			"value": ""
 		},
 		{
-			"key": "listId",
-			"value": ""
+			"key": "wrongId",
+			"value": "wrongId"
 		},
 		{
 			"key": "nameURL",
+			"value": ""
+		},
+		{
+			"key": "listId",
 			"value": ""
 		}
 	]
