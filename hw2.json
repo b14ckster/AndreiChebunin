@@ -553,7 +553,7 @@
 							"    pm.response.to.not.have.jsonBody(\"error\");\r",
 							"});\r",
 							"\r",
-							"pm.collectionVariables.unset(\"boardId\");\r",
+							"pm.collectionVariables.unset(\"listId\");\r",
 							"\r",
 							""
 						],
@@ -744,10 +744,6 @@
 		},
 		{
 			"key": "nameURL",
-			"value": ""
-		},
-		{
-			"key": "listId",
 			"value": ""
 		}
 	]
