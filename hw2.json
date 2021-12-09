@@ -1,0 +1,750 @@
+{
+	"info": {
+		"_postman_id": "e118ed19-d28a-4589-a677-0a4aa97db05d",
+		"name": "Trello Andrey Chebunin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateBoard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status to be not closed\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.closed).to.eql(false);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name to equal boardName\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.name).to.eql(pm.collectionVariables.get(\"boardName\"));\r",
+							"});\r",
+							"\r",
+							"pm.globals.get(\"variable_key\");\r",
+							"pm.test(\"Response should contains id tag\", function(){\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Set board id for next tests\", function(){\r",
+							"    pm.collectionVariables.set(\"boardId\", pm.response.json().id);\r",
+							"    console.log(\"board id is: \" + pm.collectionVariables.get(\"boardId\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/boards/?name={{boardName}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{boardName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status to be not closed\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.closed).to.eql(false);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name to equal listName\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.name).to.eql(pm.collectionVariables.get(\"listName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should contains id tag\", function(){\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Set list id for next tests\", function(){\r",
+							"    pm.collectionVariables.set(\"listId\", pm.response.json().id);\r",
+							"    console.log(\"list id is: \" + pm.collectionVariables.get(\"listId\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/lists?name={{listName}}&idBoard={{boardId}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{listName}}"
+						},
+						{
+							"key": "idBoard",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateCard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status to be not closed\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.closed).to.eql(false);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name to equal cardName\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.name).to.eql(pm.collectionVariables.get(\"cardName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should contains id tag\", function(){\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Set card id for next tests\", function(){\r",
+							"    pm.collectionVariables.set(\"cardId\", pm.response.json().id);\r",
+							"    console.log(\"card id is: \" + pm.collectionVariables.get(\"cardId\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/cards?name={{cardName}}&idList={{listId}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{cardName}}"
+						},
+						{
+							"key": "idList",
+							"value": "{{listId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCardsInList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"There is one card in list\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(Object.keys(responseJson).length).is.eql(1)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name to equal cardName\", function(){\r",
+							"   const data = pm.response.json()[0];\r",
+							"   pm.expect(data.name).to.eql(pm.collectionVariables.get(\"cardName\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/lists/{{listId}}/cards",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"lists",
+						"{{listId}}",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RenameCard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status to be not closed\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.closed).to.eql(false);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name to equal newCardName\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.name).to.eql(pm.collectionVariables.get(\"newCardName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should contains id tag\", function(){\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/cards/{{cardId}}/?name={{newCardName}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						"{{cardId}}",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{newCardName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RenameNonExistCard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a Not JSON-file\", function(){\r",
+							"   pm.response.to.not.be.json;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response contains text 'invalid id'\", function(){\r",
+							"   pm.response.to.have.body(\"invalid id\")\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/cards/{{wrongId}}/?name={{newCardName}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						"{{wrongId}}",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{newCardName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateAttachmentOnCard",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"attachmentURL\", \r",
+							"    pm.variables.replaceIn('{{$randomUrl}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\r",
+							"    \"attachmentName\", \r",
+							"    pm.variables.replaceIn('{{$randomFirstName}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\r",
+							"    \"nameURL\", \r",
+							"    \"randomURL\"\r",
+							");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should contains id attachment\", function(){\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Name to equal attachmentName\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.name).to.eql(pm.collectionVariables.get(\"attachmentName\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"URL to equal attachmentURL\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.url).to.eql(pm.collectionVariables.get(\"attachmentURL\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.unset(\"attachmentURL\");\r",
+							"pm.collectionVariables.unset(\"attachmentName\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/cards/{{cardId}}/attachments?name={{attachmentName}}&url={{attachmentURL}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						"{{cardId}}",
+						"attachments"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{attachmentName}}"
+						},
+						{
+							"key": "url",
+							"value": "{{attachmentURL}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteCard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Answer does not contain cardId\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.id).to.not.eql(pm.collectionVariables.get(\"cardId\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.unset(\"cardId\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/cards/{{cardId}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						"{{cardId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ArchiveList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status to be closed\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.closed).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should contains id tag\", function(){\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.unset(\"listId\");\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/lists/{{listId}}/closed?value=true",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"lists",
+						"{{listId}}",
+						"closed"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteBoard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuse code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response is a JSON-file\", function(){\r",
+							"   pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Answer does not contain boardId\", function(){\r",
+							"   const data = pm.response.json();\r",
+							"   pm.expect(data.id).to.not.eql(pm.collectionVariables.get(\"boardId\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.unset(\"boardId\");\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{trelloAPIURL}}/1/boards/{{boardId}}",
+					"host": [
+						"{{trelloAPIURL}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth1",
+		"oauth1": [
+			{
+				"key": "tokenSecret",
+				"value": "28a5cac24540e94ba00328530311bf7464575339f713e772c40f09af5dd17935",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "28a5cac24540e94ba00328530311bf7464575339f713e772c40f09af5dd17935",
+				"type": "string"
+			},
+			{
+				"key": "consumerSecret",
+				"value": "beac3de5f3b8fe2e5f7bb9e804b6a3fe5925410ed9b886db6da37f56907aabf0",
+				"type": "string"
+			},
+			{
+				"key": "consumerKey",
+				"value": "3adbe9feb0764cae60d0bd5962ad40d8",
+				"type": "string"
+			},
+			{
+				"key": "signatureMethod",
+				"value": "HMAC-SHA1",
+				"type": "string"
+			},
+			{
+				"key": "version",
+				"value": "1.0",
+				"type": "string"
+			},
+			{
+				"key": "addParamsToHeader",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "addEmptyParamsToSign",
+				"value": false,
+				"type": "boolean"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.collectionVariables.set(\"trelloAPIURL\", \"https://api.trello.com\");",
+					"pm.collectionVariables.set(\"boardName\", \"testBoard\");",
+					"pm.collectionVariables.set(\"listName\", \"testList\");",
+					"pm.collectionVariables.set(\"cardName\", \"testCard\");",
+					"pm.collectionVariables.set(\"newCardName\", \"testNewCard\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "trelloAPIKey",
+			"value": "3adbe9feb0764cae60d0bd5962ad40d8"
+		},
+		{
+			"key": "trelloToken",
+			"value": "28a5cac24540e94ba00328530311bf7464575339f713e772c40f09af5dd17935"
+		},
+		{
+			"key": "memberId",
+			"value": "chebuninandrei"
+		},
+		{
+			"key": "trelloAPIURL",
+			"value": ""
+		},
+		{
+			"key": "boardName",
+			"value": ""
+		},
+		{
+			"key": "listName",
+			"value": ""
+		},
+		{
+			"key": "cardName",
+			"value": ""
+		},
+		{
+			"key": "newCardName",
+			"value": ""
+		},
+		{
+			"key": "wrongId",
+			"value": "wrongId"
+		},
+		{
+			"key": "nameURL",
+			"value": ""
+		}
+	]
+}
